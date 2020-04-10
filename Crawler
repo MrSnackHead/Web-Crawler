@@ -1,0 +1,25 @@
+import requests
+import bs4 as bs
+import urllib.request
+
+user_url_input = str(input('URL: '))
+
+raw_html = requests.get(user_url_input).text
+
+soup = bs.BeautifulSoup(raw_html, 'html.parser')
+
+images = soup.find_all('img')
+
+links = []
+
+for img in images:
+    link = img.get('src')
+    print(link)
+    if 'https://' not in link:     #for some strange reason this also works when 'http://' is missing
+        link = user_url_input + link
+    links.append(link)
+    
+print('----------------------------------------')
+print("\n".join(links))
+print('----------------------------------------')
+print('Images detected: ' + str(len(links)))
